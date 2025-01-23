@@ -59,10 +59,10 @@ def define_variables():
     habitability['usable']  = fuzz.trapmf(habitability.universe, [.75, .85,1,1])
 
     reparability = ctrl.Consequent(np.arange(0, 1.05, 0.05), 'reparability')
-    reparability['Possible demolition']= fuzz.trapmf(reparability.universe,[0,0,.25,.45])
+    reparability['Possible demolition']= fuzz.trapmf(reparability.universe,[0,0,.2,.4])
     reparability['Strengthening']= fuzz.trimf(reparability.universe, [.25, .50, .75])
-    reparability['Reparation'] = fuzz.trimf(reparability.universe,[.50, .75, 1])
-    reparability['Not any or minor']  = fuzz.trapmf(reparability.universe, [.75, .85,1,1])
+    reparability['Reparation'] = fuzz.trimf(reparability.universe,[.50, .8, 1])
+    reparability['Not any or minor']  = fuzz.trapmf(reparability.universe, [.75, .90,1,1])
 
     print("Linguistic variables and fuzzy sets defined successfully.")
     return (intact_col,tilt, ruble_percentage, building_area, building_hight,damage_per,
@@ -176,7 +176,28 @@ def ES(hight,t,col,area,v_d,age):
     print("the results :")
     return(results_sim.output)
 
+def label(damage_per,num):
+    result={}
+    for x in ["none", "light" ,"moderate", "heavy" ,"severe"]:
+        y=fuzz.interp_membership(damage_per.universe, damage_per[x].mf, num)
+        if y>0:
+            result[x]=y
+    return(result)
 
+def r_label(rep,num):
+    result={}
+    for x in ['Possible demolition','Strengthening','Reparation','Not any or minor']:
+        y=fuzz.interp_membership(rep.universe, rep[x].mf, num)
+        if y>0:
+            result[x]=y
+    return(result)
 
+def h_label(rep,num):
+    result={}
+    for x in ['dangrouse','prohibited','restricted','usable']:
+        y=fuzz.interp_membership(rep.universe, rep[x].mf, num)
+        if y>0:
+            result[x]=y
+    return(result)
 if __name__=="__main__":
     ES()

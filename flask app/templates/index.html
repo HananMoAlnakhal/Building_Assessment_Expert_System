@@ -5,14 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fuzzy Building Assessment</title>
     <style>
+      :root {
+        --percentage: 8%;
+        --primary: white;
+        --blue: rgba(17, 122, 255, 1);
+        --blue-grad: radial-gradient(
+          rgba(17, 122, 255, 1) 50%,
+          rgba(20, 159, 255, 1) 50%,
+          rgb(128, 202, 255) 70%,
+          rgb(231, 245, 255) 80%,
+          rgb(250, 250, 250) 100%
+        );
+      }
+      * {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
       body {
-        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         max-width: 600px;
         margin: auto;
         padding: 20px;
       }
       .slider-container {
-        margin-bottom: 20px;
+        margin-bottom: 40px;
       }
       label {
         font-weight: bold;
@@ -21,62 +38,113 @@
         width: 100%;
       }
       #results {
+        width: 90vh;
         margin-top: 20px;
-        padding: 15px;
+        padding: 30px;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 10px;
+        box-shadow: 0px 10px 20px 5px #ddd;
       }
-      .chart{
+      .chart {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 200px;
         height: 200px;
         border-radius: 50%;
+        border: 2px solid rgb(179, 179, 179);
         background-image: conic-gradient(
-        rgba(0, 0, 255, 0) 0% 20%,
-        red 20% 100%
+          from 90deg,
+          rgb(12 255 117 / 67%) 0%,
+          rgb(255 62 45) var(--percentage),
+          rgba(0, 0, 255, 0) 2%
         );
+      }
+      .contatnt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border: 1px solid rgba(190, 190, 190, 0.374);
+        /* box-shadow: 0px 10px 5px 1px #110b0b77; */
+        width: 125px;
+        height: 125px;
+        border-radius: 50%;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      strong {
+        font-size: 1.5rem;
+      }
+      button {
+        height: fit-content;
+        font-size: larger;
+        padding: 8px 20px;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        color: var(--primary);
+        font-weight: 530;
+        background-clip: border-box;
+        background-attachment: scroll;
+        background-size: 700px 700px;
+        background-position: 20% 20%;
+        transition: all 0.3s ease-in-out;
+        border: 1px solid white;
+        background-image: var(--blue-grad);
+      }
+      button:hover {
+        transition: all 0.3s ease-in-out;
+        background-position: -5% -3%;
+        border: 1px solid var(--blue);
+        color: var(--blue);
+        transition: 0.2s ease-in;
       }
     </style>
   </head>
   <body>
     <h1>Building Assessment Expert System</h1>
-    <h1></h1>
-    <div id="results" style="display: none">
-      <h3>Results</h3>
-      <p><strong>Damage:</strong> <span id="damage_result"></span></p>
-      <div
-        class="chart"
-      >
-        <div
-          class="contatnt"
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: white;
-            width: 125px;
-            height: 125px;
-            border-radius: 50%;
-            text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-          "
-        >
-          <h1>80%</h1>
+    <!-- <div id="results" style="display: none"> -->
+    <div id="results" style="display: none; text-align: center">
+      <!-- <div style="display: flex; flex-direction: column; align-items: center"> -->
+      <h1 style="text-align: center">Results</h1>
+      <hr />
+      <hr />
+      <!-- <h1 id="labels"></h1> -->
+      <p>
+        <!-- <span id="damage_result"></span> -->
+      </p>
+      <div style="display: flex">
+        <strong>Damage:</strong>
+        <div class="chart">
+          <div class="contatnt">
+            <h1 id="damage_result">80%</h1>
+          </div>
+        </div>
+        <div>
+          <div style="margin-left: 50px">
+            <p>
+              <strong>Damge state:<br /></strong><br />
+              <span id="labels"></span>
+            </p>
+          </div>
         </div>
       </div>
-      <p>
-        <strong>Habitability:</strong> <span id="habitability_result"></span>
-      </p>
-      <p>
-        <strong>Reparability:</strong> <span id="reparability_result"></span>
-      </p>
+      <hr />
+      <p><strong>Habitability:</strong> <span id="h_result"></span></p>
+      <p><strong>Reparability:</strong> <span id="r_result"></span></p>
+      <button type="button" id="ReSubmit">ReSubmit</button>
+      <!-- </div> -->
     </div>
+
     <h1></h1>
+
     <form id="assessmentForm">
       <div class="slider-container">
         <label for="intact_col">how many stright columns?</label>
+        <br />
+        <br />
         <input
           type="number"
           id="intact_col"
@@ -84,8 +152,10 @@
           min="0"
           max="200"
           step="1"
-          value="100"
+          value="5"
         />
+        column
+        <br />
         <!-- <span id="intact_col_value">100</span> -->
       </div>
 
@@ -100,7 +170,7 @@
           step="1"
           value="0"
         />
-        <!-- <span id="tilt_value">45</span> -->
+        <span id="tilt_value">0</span> degrees
       </div>
 
       <div class="slider-container">
@@ -112,9 +182,9 @@
           min="0"
           max="100"
           step="1"
-          value="50"
+          value="37"
         />
-        <span id="ruble_percentage_value">50</span>
+        <span id="ruble_percentage_value">37</span>%
       </div>
 
       <div class="slider-container">
@@ -126,15 +196,17 @@
           min="0"
           max="3000"
           step="10"
-          value="1500"
+          value="250"
         />
-        <span id="building_area_value">1500</span>
+        <span id="building_area_value">250</span>
       </div>
 
       <div class="slider-container">
         <label for="building_hight"
           >how many floors does the building have?</label
         >
+        <br />
+        <br />
         <input
           type="number"
           id="building_hight"
@@ -142,13 +214,15 @@
           min="1"
           max="20"
           step="1"
-          value="10"
+          value="2"
         />
-        <span id="building_hight_value">10</span>
+        <span id="building_hight_value">floors</span>
       </div>
 
       <div class="slider-container">
-        <label for="building_age">how old is the building?<br />.</label>
+        <label for="building_age">how old is the building?<br /></label>
+        <br />
+
         <input
           type="number"
           id="building_age"
@@ -156,9 +230,9 @@
           min="0"
           max="120"
           step="1"
-          value="60"
+          value="20"
         />
-        <span id="building_age_value">60</span>
+        <span id="building_age_value"></span> years
       </div>
 
       <button type="button" id="submitBtn">Submit</button>
@@ -173,7 +247,14 @@
         });
       });
 
-      // Handle form submission
+      document
+        .getElementById("ReSubmit")
+        .addEventListener("click", async () => {
+          document.getElementById("results").style.display = "none";
+          document.getElementById("assessmentForm").style.display = "block";
+          document.getElementById("labels").innerHTML = "";
+        });
+
       document
         .getElementById("submitBtn")
         .addEventListener("click", async () => {
@@ -195,21 +276,63 @@
               body: JSON.stringify(formData),
             });
 
-            // if (!response.ok) {
-            //   throw new Error(`Server error: ${response.status}`);
-            // }
+            if (!response.ok) {
+              throw new Error(`Server error: ${response.status}`);
+            }
 
             const result = await response.json();
 
             // Display the results
             document.getElementById("damage_result").textContent =
-              result.damage;
-            document.getElementById("habitability_result").textContent =
-              result.habitability;
-            document.getElementById("reparability_result").textContent =
-              result.reparability;
+              (result.damage * 100).toFixed(2) + "%";
+            document.getElementById("h_result").textContent = (
+              result.habitability * 100
+            ).toFixed(2);
+            document.getElementById("r_result").textContent = (
+              result.reparability * 100
+            ).toFixed(2);
+            console.log(result);
+
+            let item = document.querySelectorAll(".chart")[0];
+            let val = result.damage * 100 + "%";
+            item.style.setProperty("--percentage", val);
+            console.log(val);
+
+            // result.damage_labels
+            const container = document.getElementById("labels");
+            const damageLabels = result.damage_labels;
+
+            for (const [label, value] of Object.entries(damageLabels)) {
+              const span = document.createElement("span");
+              span.textContent = `${label}: ${(value * 100).toFixed(2)}%`;
+              span.style.display = "block";
+              span.style.marginBottom = "5px";
+              span.style.fontWeight = "Bolder";
+              container.appendChild(span);
+            }
+            const h_c = document.getElementById("h_result");
+            const h_labels = result.h_labels;
+
+            for (const [label, value] of Object.entries(h_labels)) {
+              const span = document.createElement("span");
+              span.textContent = `${label}: ${(value * 100).toFixed(2)}%`;
+              span.style.display = "block";
+              span.style.marginBottom = "5px";
+              h_c.appendChild(span);
+            }
+            const r_c = document.getElementById("r_result");
+            const r_labels = result.r_labels;
+
+            for (const [label, value] of Object.entries(r_labels)) {
+              const span = document.createElement("span");
+              span.textContent = `${label}: ${(value * 100).toFixed(2)}%`;
+              span.style.display = "block";
+              span.style.marginBottom = "5px";
+              r_c.appendChild(span);
+            }
 
             document.getElementById("results").style.display = "block";
+            document.getElementById("assessmentForm").style.display = "none";
           } catch (error) {
             console.error("Error:", error);
             // alert("An error occurred. Please check the console for details.");

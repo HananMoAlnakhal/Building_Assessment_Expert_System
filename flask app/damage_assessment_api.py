@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify,render_template
-from ES import construct_rules,create_fuzzy_system,define_variables
+from ES import construct_rules,create_fuzzy_system,define_variables,label,r_label,h_label
 # Define the Flask app
 app = Flask(__name__)
 
@@ -23,13 +23,11 @@ def home():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     data = request.json  # Parse JSON input
-    # print("before",data)
     if not data:
         return jsonify({'error': 'Invalid input data'}), 400
     for key,val in data.items() :
         data[key]=float(val)
-    # print(data)
-    # Set inputs for the fuzzy system
+
     damage_sim.input['building_hight'] = data['building_hight']
     damage_sim.input['ruble_percentage'] = data['ruble_percentage']
     damage_sim.input['building_area'] = data['building_area']
@@ -40,11 +38,13 @@ def calculate():
     results_sim.input['building_age'] = data['building_age']
     results_sim.compute()
     print(data) 
-    # Return results as JSON
     return {
         'damage': damage_sim.output.get('damage'),
         'habitability': results_sim.output.get('habitability'),
-        'reparability': results_sim.output.get('reparability')
+        'reparability': results_sim.output.get('reparability'),
+        'damage_labels':label(damage_per,damage_sim.output.get('damage')),
+        'r_labels':r_label(reparability,results_sim.output.get('reparability')),
+        'h_labels':h_label(habitability,results_sim.output.get('habitability'))
     }
 
 if __name__ == '__main__':
