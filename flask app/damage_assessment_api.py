@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify,render_template
 from ES import construct_rules,create_fuzzy_system,define_variables,label,r_label,h_label
-import os
 # Define the Flask app
 app = Flask(__name__)
 
@@ -48,7 +47,5 @@ def calculate():
         'h_labels':h_label(habitability,results_sim.output.get('habitability'))
     }
 
-if __name__ == "__main__":
-    # Bind to the port provided by Render
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    app.run()
