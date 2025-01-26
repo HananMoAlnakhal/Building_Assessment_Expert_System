@@ -3,6 +3,8 @@
 
 [Visit the Application Here](https://building-assessment-expert-system.onrender.com/)
 
+[A Full report](https://docs.google.com/document/d/1255yK7omVCKyk_zLox388LZd687c9QvjnJtK-s4XCmA/edit?usp=sharing)
+
 ---
 
 ## **About the Project**  
